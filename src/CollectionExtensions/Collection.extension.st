@@ -1,0 +1,162 @@
+Extension { #name : #Collection }
+
+{ #category : #'*CollectionExtensions' }
+Collection >> collectAsSet: aBlock [
+	"Evaluates aBlock for each element of the receiver and collects
+	the resulting values into a Set."
+
+	"This is an efficient shorthand for [ (self collect: aBlock) asSet ]."
+	"originally developed by a. kuhn and released under MIT."
+	
+	^self inject: Set new into: [ :set :each | 
+		set add: (aBlock value: each); yourself ].
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> copyEmpty: aSize [
+	"Answer a copy of the receiver that contains no elements.
+
+	This method should be redefined in subclasses that add
+	instance variables, so that the state of those variables
+	is preserved"
+
+	^self class new: aSize
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> equalsTo: aCollection [ 
+	"Answer true if the reciever contains the same elements as aCollection, and vice versa."
+
+	^(aCollection isCollection) 
+		and: [ aCollection size = self size 
+			and: [ aCollection allSatisfy: [ :each | 
+				(aCollection occurrencesOf: each) = (self occurrencesOf: each) ]]]
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> flatCollect: aBlock [ 
+	"Evaluate aBlock for each of the receiver's elements and answer the
+	list of all resulting values flatten one level. Assumes that aBlock returns some kind
+	of collection for each element. Equivalent to the lisp's mapcan"
+	"original written by a. Kuhn and released under MIT"
+	
+	| stream |
+	self isEmpty ifTrue: [ ^ self copy ].
+	stream := (self species new: 0) nsWriteStream.
+	self do: [ :each | stream nextPutAll: (aBlock value: each) ].
+	^ stream contents
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> flatCollectAsSet: aBlock [
+	"Evaluate aBlock for each of the receiver's elements and answer the
+	list of all resulting values flatten one level. Assumes that aBlock returns some kind
+	of collection for each element. Equivalent to the lisp's mapcan"
+	
+	"original written by a. Kuhn and released under MIT"
+	
+	| set |
+	self isEmpty ifTrue: [^self copy ].
+	set := Set new. 	
+	self do: [ :each |
+		set addAll: (aBlock value: each) ].
+	^set
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> flatten [
+	"Recursively collect each non-collection element of the receiver and its descendant
+	collections.  Please note, this implementation assumes that strings are to be treated
+	as objects rather than as collection."
+
+	^self gather: [ :each ]
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> groupedBy: aBlock [
+	"Return a dictionary whose keys are the result of evaluating aBlock for all elements in
+	 the collection, and the value for each key is the collection of elements that evaluated
+	 to that key. e.g.
+	     #(1 2 3 4 5) groupedBy: [:each | each odd]
+	   a Dictionary  
+	     true ---> #( 1 3 5)
+	     false --> #(2 4)
+	originally developed by a. kuhn and released under MIT."
+
+	| result |
+	result := Dictionary new.
+	self do:
+		[:each | | key collection |
+		key := aBlock value: each.
+		collection := result at: key ifAbsentPut: [OrderedCollection new].
+		collection add: each].
+	self species ~~ OrderedCollection ifTrue:
+		["Convert the result collections to be the right type.
+		  Note that it should be safe to modify the dictionary
+		  while iterating because we only replace values for existing keys"
+		result keysAndValuesDo:
+			[:key :value | result at: key put: (self species withAll: value)]].
+
+	^result
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> includesAll: aCollection [ 
+	"Answer true if the receiver includes all elements of aCollection with at
+	least as many occurrences as in aCollection. For a less strict comparison
+	please refer to supersetOf: and its inverse subsetOf:."
+
+
+	^(aCollection isCollection) and: [
+		aCollection size <= self size and: [
+			aCollection allSatisfy: [ :each | 
+				(aCollection occurrencesOf: each) <= (self occurrencesOf: each) ]]]
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> nilSafeGroupedBy: aBlock [
+	^ self groupedBy: [ :each |
+		| value |
+		value := aBlock value: each.
+		value ifNil: [ UndefinedObject ].
+	]	
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> selectAsSet: aBlock [ 
+	"Evaluate aBlock with each of the receiver's elements as the argument. 
+	Collect into a new set, only those elements for which
+	aBlock evaluates to true.  Answer the new collection."
+
+	| newSet |
+	newSet := Set new.
+	self do: [:each | (aBlock value: each) ifTrue: [newSet add: each]].
+	^newSet
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> shuffle [
+	"Swaps the receiver's elements at random."
+
+	self shuffle: (self size * self size log) asInteger
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> shuffle: times [
+	"Swaps random elements of the receiver."
+
+	| size random |
+	size := self size.
+	random := Random new.
+	times timesRepeat: [ 
+		self swap: (random next * size) floor + 1 with: (random next * size) floor + 1 
+	].
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> sum: aSymbolOrBlock [ 
+	 
+	^self 
+		inject: 0 
+		into: [:sum :each | sum + (aSymbolOrBlock value: each)]
+]
