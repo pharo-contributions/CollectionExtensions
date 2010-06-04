@@ -41,10 +41,10 @@ CollectionExtensionTest >> testFlatCollect [
 CollectionExtensionTest >> testFlatCollectArray [
 	"self debug: #testFlatCollectArray"
 	
-	self assert: ((#((1 2) (3 4) (5 3)) flatCollect: [ :each ]) = #(1 2 3 4 5 3)).
-	self assert: ((#((1 2) (2 3) (1 3 4)) flatCollect: [:each]) = #(1 2 2 3 1 3 4)). 	
+	self assert: ((#((1 2) (3 4) (5 3)) flatCollect: [ :each | each ]) = #(1 2 3 4 5 3)).
+	self assert: ((#((1 2) (2 3) (1 3 4)) flatCollect: [:each | each]) = #(1 2 2 3 1 3 4)). 	
 		
-	self assert: ((#((1 2) (2 3) () ()) flatCollect: [:each]) = #(1 2 2 3)). 
+	self assert: ((#((1 2) (2 3) () ()) flatCollect: [:each | each]) = #(1 2 2 3)). 
 
 	self assert: ((#((1 2) (2 3) (1 3 4)) flatCollect: [:each| Array with: each])
 					=  #(#(1 2) #(2 3) #(1 3 4))).
@@ -59,13 +59,13 @@ CollectionExtensionTest >> testFlatCollectArray [
 CollectionExtensionTest >> testFlatCollectSet [
 	"self debug: #testFlatCollectSet"
 	
-	self assert: ((#((1 2) (1 2) (1 3 4)) asSet  flatCollect: [:each]) = #(1 1 2 3 4) asSet).
+	self assert: ((#((1 2) (1 2) (1 3 4)) asSet  flatCollect: [:each | each]) = #(1 1 2 3 4) asSet).
 	self assert: ((#() asSet flatCollect: [:each]) = #() asSet).
 
-	self assert:  ((#((1 2) () (1 3 4)) asSet  flatCollect: [:each]) = #(1 1 2 3 4) asSet).
-	self assert:  ((#((1 2) #((99)) (1 3 4)) asSet  flatCollect: [:each]) 
+	self assert:  ((#((1 2) () (1 3 4)) asSet  flatCollect: [:each | each]) = #(1 1 2 3 4) asSet).
+	self assert:  ((#((1 2) #((99)) (1 3 4)) asSet  flatCollect: [:each | each]) 
 					= #(1 1 2 3 4 (99)) asSet).
-	self assert:  ((#((1 2) #(()) (1 3 4)) asSet  flatCollect: [:each]) 
+	self assert:  ((#((1 2) #(()) (1 3 4)) asSet  flatCollect: [:each | each]) 
 					= #(1 1 2 3 4 ()) asSet).
 ]
 

@@ -69,7 +69,7 @@ Collection >> flatten [
 	collections.  Please note, this implementation assumes that strings are to be treated
 	as objects rather than as collection."
 
-	^self gather: [ :each ]
+	^self gather: [ :each | each ]
 ]
 
 { #category : #'*CollectionExtensions' }
