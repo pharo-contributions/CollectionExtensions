@@ -30,6 +30,30 @@ CollectionExtensionTest >> testCollectAsSetUsingSymbol [
 					= (Set with: true).
 ]
 
+{ #category : #'as yet unclassified' }
+CollectionExtensionTest >> testDetectIfOne [
+	| element result |
+	result := #(1 2 3) detect: [:each | each = 2] ifOne: [:theOne | element := theOne ].
+	self assert: element = 2.
+	self assert: result = 2.
+
+	element := nil.
+	result := #(1 2 3) detect: [:each | each = 4] ifOne: [:theOne | element := theOne ].
+	self assert: element isNil.
+	self assert: result isNil.
+]
+
+{ #category : #'as yet unclassified' }
+CollectionExtensionTest >> testDetectIfOneIfNone [
+	| element |
+	#(1 2 3) detect: [:each | each = 2] ifOne: [:theOne | element := theOne ] ifNone: [element := nil].
+	self assert: element = 2.
+
+	#(1 2 3) detect: [:each | each = 4] ifOne: [:theOne | element := theOne ] ifNone: [element := nil].
+	self assert: element isNil.
+
+]
+
 { #category : #'flat collect' }
 CollectionExtensionTest >> testFlatCollect [
 	"self debug: #testFlatCollect"

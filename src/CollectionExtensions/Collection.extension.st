@@ -24,6 +24,20 @@ Collection >> copyEmpty: aSize [
 ]
 
 { #category : #'*CollectionExtensions' }
+Collection >> detect: aBlock ifOne: presentBlock [
+	^ self detect: aBlock ifOne: presentBlock ifNone: [nil] 
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> detect: aBlock ifOne: presentBlock ifNone: noneBlock [
+	| result |
+	result := self detect: aBlock ifNone: [nil].
+	^ result isNil 
+		ifTrue: [ noneBlock value ]
+		ifFalse: [ presentBlock value: result ]
+]
+
+{ #category : #'*CollectionExtensions' }
 Collection >> equalsTo: aCollection [ 
 	"Answer true if the reciever contains the same elements as aCollection, and vice versa."
 
@@ -61,15 +75,6 @@ Collection >> flatCollectAsSet: aBlock [
 	self do: [ :each |
 		set addAll: (aBlock value: each) ].
 	^set
-]
-
-{ #category : #'*CollectionExtensions' }
-Collection >> flatten [
-	"Recursively collect each non-collection element of the receiver and its descendant
-	collections.  Please note, this implementation assumes that strings are to be treated
-	as objects rather than as collection."
-
-	^self gather: [ :each | each ]
 ]
 
 { #category : #'*CollectionExtensions' }
