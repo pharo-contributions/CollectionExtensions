@@ -78,6 +78,15 @@ Collection >> flatCollectAsSet: aBlock [
 ]
 
 { #category : #'*CollectionExtensions' }
+Collection >> flatten [
+	"Recursively collect each non-collection element of the receiver and its descendant
+	collections.  Please note, this implementation assumes that strings are to be treated
+	as objects rather than as collection."
+
+	^self gather: [ :each | each ]
+]
+
+{ #category : #'*CollectionExtensions' }
 Collection >> groupedBy: aBlock [
 	"Return a dictionary whose keys are the result of evaluating aBlock for all elements in
 	 the collection, and the value for each key is the collection of elements that evaluated
