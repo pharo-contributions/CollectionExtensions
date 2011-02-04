@@ -1,6 +1,12 @@
 Extension { #name : #String }
 
 { #category : #'*CollectionExtensions' }
+String >> deepFlattenInto: stream [
+
+	stream nextPut: self
+]
+
+{ #category : #'*CollectionExtensions' }
 String >> piecesCutWhere: aBlock [ 
 	"Evaluate testBlock for successive pairs of the receiver elements,
 	breaking the receiver into pieces between elements where

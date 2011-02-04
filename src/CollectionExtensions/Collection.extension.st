@@ -24,6 +24,19 @@ Collection >> copyEmpty: aSize [
 ]
 
 { #category : #'*CollectionExtensions' }
+Collection >> deepFlatten [
+
+	^ Array streamContents: [ :stream |
+			self do: [ :each | each deepFlattenInto: stream ]]
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> deepFlattenInto: stream [
+
+	self do: [ :each | each deepFlattenInto: stream ]
+]
+
+{ #category : #'*CollectionExtensions' }
 Collection >> detect: aBlock ifOne: presentBlock [
 	^ self detect: aBlock ifOne: presentBlock ifNone: [nil] 
 ]

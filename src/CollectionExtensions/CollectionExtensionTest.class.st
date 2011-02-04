@@ -30,6 +30,42 @@ CollectionExtensionTest >> testCollectAsSetUsingSymbol [
 					= (Set with: true).
 ]
 
+{ #category : #flatten }
+CollectionExtensionTest >> testDeepFlatten [
+
+	self assert: #(1 2 3)
+		equals: #((1) (2) (3)) deepFlatten.
+	self assert: #(1 2 3 1 2)
+		equals: #((1 2) (3 1 2)) deepFlatten.
+
+]
+
+{ #category : #flatten }
+CollectionExtensionTest >> testDeepFlattenIsRecursive [
+
+	self assert: #(1 2 4 5 3)
+		equals: #((1 2) ((4 5) 3)) deepFlatten.
+]
+
+{ #category : #flatten }
+CollectionExtensionTest >> testDeepFlattenOnFlatCollection [
+
+	self assert: #(1 2 4)
+		equals: #(1 2 4) deepFlatten.
+	self assert: #(5 3)
+		equals: #(5 ((3))) deepFlatten.
+]
+
+{ #category : #flatten }
+CollectionExtensionTest >> testDeepFlattenOnString [
+	"don't flatten strings"
+
+	self assert: #(a b c d e)
+		equals: #((a b) ((c d) e)) deepFlatten.
+	self assert: #('foo' 'bar' 'zorg')
+		equals: #(('foo' ('bar')) 'zorg') deepFlatten
+]
+
 { #category : #'as yet unclassified' }
 CollectionExtensionTest >> testDetectIfOne [
 	| element result |
@@ -91,6 +127,18 @@ CollectionExtensionTest >> testFlatCollectSet [
 					= #(1 1 2 3 4 (99)) asSet).
 	self assert:  ((#((1 2) #(()) (1 3 4)) asSet  flatCollect: [:each | each]) 
 					= #(1 1 2 3 4 ()) asSet).
+]
+
+{ #category : #flatten }
+CollectionExtensionTest >> testFlatten [
+
+	self assert: #(1 2 3)
+		equals: #((1) (2) (3)) flatten.
+	self assert: #(1 2 3 1 2)
+		equals: #((1 2) (3 1 2)) flatten.
+	self assert: #(a b (c d))
+		equals: #((a b) ((c d))) flatten.
+	self should: [ #((1 2) 3) flatten ] raise: Error.
 ]
 
 { #category : #groupedBy }
