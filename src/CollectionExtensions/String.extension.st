@@ -1,6 +1,22 @@
 Extension { #name : #String }
 
 { #category : #'*CollectionExtensions' }
+String >> asEnglishPlural [
+	"Answer the plural of the receiver.  Assumes the receiver is an English noun.
+	For a more comprehensive algorithm please refer to ''An Algorithmic Approach
+	to English Pluralization'' by Damian Conway."
+
+	self size < 2 ifTrue: [ ^self ].
+	self asString = 'child' ifTrue: [ ^'children' ].
+
+	((self last == $y) and: [ (self at: self size - 1) isVowel not ]) 
+		ifTrue: [ ^self replaceSuffix: 'y' with: 'ies' ].
+	(self endsWith: 's') ifTrue: [ ^self replaceSuffix: 's' with: 'ses' ].
+
+	^self copyWith: $s.
+]
+
+{ #category : #'*CollectionExtensions' }
 String >> deepFlattenInto: stream [
 
 	stream nextPut: self
@@ -51,4 +67,23 @@ String >> piecesCutWhereCamelCase [
 	pieces addAll: ((self copyFrom: start to: self size) piecesCutWhere: [:a :b | 
 		(a isDigit and: [b isDigit not]) or: [a isDigit not and: [b isDigit ]]]).
 	^pieces
+]
+
+{ #category : #'*CollectionExtensions' }
+String >> removePrefix: prefix [
+	"Remove the given prefix, if present."
+
+	^(self beginsWith: prefix) ifTrue: [ self copyFrom: 1 + prefix size to: self size ] ifFalse: [ self ]
+]
+
+{ #category : #'*CollectionExtensions' }
+String >> removeSuffix: suffix [
+	"Remove the given suffix, if present."
+
+	^(self endsWith: suffix) ifTrue: [ self copyFrom: 1 to: self size - suffix size ] ifFalse: [ self ]
+]
+
+{ #category : #'*CollectionExtensions' }
+String >> replaceSuffix: suffix with: replacement [
+	^ (self removeSuffix: suffix), replacement
 ]
