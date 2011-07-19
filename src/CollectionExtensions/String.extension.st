@@ -23,6 +23,22 @@ String >> deepFlattenInto: stream [
 ]
 
 { #category : #'*CollectionExtensions' }
+String >> intervalFromStartLine: aStartLine startColumn: aStartColumn toEndLine: anEndLine endColumn: anEndColumn [
+
+	" Returns an interval spanning between startLine @ startColumn to endLine @ endColumn"
+	
+	| lineIndex intervalStart intervalEnd |
+	lineIndex := 0.
+	intervalStart := 1.
+	intervalEnd := 0.
+	self lineIndicesDo: [ :start :endWithoutDelimiters :end |
+		lineIndex := lineIndex + 1.
+		lineIndex = aStartLine ifTrue: [ intervalStart := start + aStartColumn - 1 ].
+		lineIndex = anEndLine ifTrue: [ intervalEnd := start + anEndColumn - 1] ].
+	^ intervalStart to: intervalEnd
+]
+
+{ #category : #'*CollectionExtensions' }
 String >> piecesCutWhere: aBlock [ 
 	"Evaluate testBlock for successive pairs of the receiver elements,
 	breaking the receiver into pieces between elements where
