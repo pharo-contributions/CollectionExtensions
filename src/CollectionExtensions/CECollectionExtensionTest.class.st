@@ -1,11 +1,11 @@
 Class {
-	#name : #CollectionExtensionTest,
+	#name : #CECollectionExtensionTest,
 	#superclass : #TestCase,
 	#category : #CollectionExtensions
 }
 
 { #category : #'collect as set' }
-CollectionExtensionTest >> testCollectAsSet [
+CECollectionExtensionTest >> testCollectAsSet [
 	"self debug: #testCollectAsSet"
 	
 	self assert: ((#() collectAsSet: [:each | each odd]) = Set new).
@@ -20,7 +20,7 @@ CollectionExtensionTest >> testCollectAsSet [
 ]
 
 { #category : #'collect as set' }
-CollectionExtensionTest >> testCollectAsSetUsingSymbol [
+CECollectionExtensionTest >> testCollectAsSetUsingSymbol [
 	"self debug: #testCollectAsSetUsingSymbol"
 	
 	self assert: ((#() collectAsSet: #odd) = Set new).
@@ -31,7 +31,7 @@ CollectionExtensionTest >> testCollectAsSetUsingSymbol [
 ]
 
 { #category : #flatten }
-CollectionExtensionTest >> testDeepFlatten [
+CECollectionExtensionTest >> testDeepFlatten [
 
 	self assert: #(1 2 3)
 		equals: #((1) (2) (3)) deepFlatten.
@@ -41,14 +41,14 @@ CollectionExtensionTest >> testDeepFlatten [
 ]
 
 { #category : #flatten }
-CollectionExtensionTest >> testDeepFlattenIsRecursive [
+CECollectionExtensionTest >> testDeepFlattenIsRecursive [
 
 	self assert: #(1 2 4 5 3)
 		equals: #((1 2) ((4 5) 3)) deepFlatten.
 ]
 
 { #category : #flatten }
-CollectionExtensionTest >> testDeepFlattenOnFlatCollection [
+CECollectionExtensionTest >> testDeepFlattenOnFlatCollection [
 
 	self assert: #(1 2 4)
 		equals: #(1 2 4) deepFlatten.
@@ -57,7 +57,7 @@ CollectionExtensionTest >> testDeepFlattenOnFlatCollection [
 ]
 
 { #category : #flatten }
-CollectionExtensionTest >> testDeepFlattenOnString [
+CECollectionExtensionTest >> testDeepFlattenOnString [
 	"don't flatten strings"
 
 	self assert: #(a b c d e)
@@ -67,7 +67,7 @@ CollectionExtensionTest >> testDeepFlattenOnString [
 ]
 
 { #category : #'as yet unclassified' }
-CollectionExtensionTest >> testDetectIfOne [
+CECollectionExtensionTest >> testDetectIfOne [
 	| element result |
 	result := #(1 2 3) detect: [:each | each = 2] ifOne: [:theOne | element := theOne ].
 	self assert: element = 2.
@@ -80,7 +80,7 @@ CollectionExtensionTest >> testDetectIfOne [
 ]
 
 { #category : #'as yet unclassified' }
-CollectionExtensionTest >> testDetectIfOneIfNone [
+CECollectionExtensionTest >> testDetectIfOneIfNone [
 	| element |
 	#(1 2 3) detect: [:each | each = 2] ifOne: [:theOne | element := theOne ] ifNone: [element := nil].
 	self assert: element = 2.
@@ -91,14 +91,14 @@ CollectionExtensionTest >> testDetectIfOneIfNone [
 ]
 
 { #category : #'flat collect' }
-CollectionExtensionTest >> testFlatCollect [
+CECollectionExtensionTest >> testFlatCollect [
 	"self debug: #testFlatCollect"
 	
 	
 ]
 
 { #category : #'flat collect' }
-CollectionExtensionTest >> testFlatCollectArray [
+CECollectionExtensionTest >> testFlatCollectArray [
 	"self debug: #testFlatCollectArray"
 	
 	self assert: ((#((1 2) (3 4) (5 3)) flatCollect: [ :each | each ]) = #(1 2 3 4 5 3)).
@@ -116,7 +116,7 @@ CollectionExtensionTest >> testFlatCollectArray [
 ]
 
 { #category : #'flat collect' }
-CollectionExtensionTest >> testFlatCollectSet [
+CECollectionExtensionTest >> testFlatCollectSet [
 	"self debug: #testFlatCollectSet"
 	
 	self assert: ((#((1 2) (1 2) (1 3 4)) asSet  flatCollect: [:each | each]) = #(1 1 2 3 4) asSet).
@@ -130,7 +130,7 @@ CollectionExtensionTest >> testFlatCollectSet [
 ]
 
 { #category : #flatten }
-CollectionExtensionTest >> testFlatten [
+CECollectionExtensionTest >> testFlatten [
 
 	self assert: #(1 2 3)
 		equals: #((1) (2) (3)) flatten.
@@ -142,7 +142,7 @@ CollectionExtensionTest >> testFlatten [
 ]
 
 { #category : #groupedBy }
-CollectionExtensionTest >> testGroupedBy [
+CECollectionExtensionTest >> testGroupedBy [
 	"self debug: #testGroupedBy"
 	
 	| res |
@@ -153,7 +153,7 @@ CollectionExtensionTest >> testGroupedBy [
 ]
 
 { #category : #groupedBy }
-CollectionExtensionTest >> testGroupedByArray [
+CECollectionExtensionTest >> testGroupedByArray [
 	"self debug: #testGroupedByArray"
 	
 	| res |
@@ -163,7 +163,7 @@ CollectionExtensionTest >> testGroupedByArray [
 ]
 
 { #category : #groupedBy }
-CollectionExtensionTest >> testGroupedBySet [
+CECollectionExtensionTest >> testGroupedBySet [
 	"self debug: #testGroupedBySet"
 	
 	| res |
@@ -173,7 +173,7 @@ CollectionExtensionTest >> testGroupedBySet [
 ]
 
 { #category : #'symbol - value' }
-CollectionExtensionTest >> testSymbolInPlaceOfBlock [
+CECollectionExtensionTest >> testSymbolInPlaceOfBlock [
 	"self debug: #testSymbolInPlaceOfBlock"
 	
 	self assert: (#(1 2 3 4) collect: #odd) =  #(true false true false).
