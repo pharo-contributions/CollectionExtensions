@@ -3,11 +3,18 @@ Extension { #name : #SequenceableCollection }
 { #category : #'*CollectionExtensions' }
 SequenceableCollection >> pairsDistanceFrom: aSequenceableCollection [
 	
+	self deprecated: 'Please use pairsSimilarityWith:'.
+	^ self pairsSimilarityWith: aSequenceableCollection
+]
+
+{ #category : #'*CollectionExtensions' }
+SequenceableCollection >> pairsSimilarityWith: aSequenceableCollection [
+	
 	"
 		Examples:
-		'1234' pairsDistanceFrom: '2234' ==> (2/3)
-		'1234' pairsDistanceFrom: '123' ==>  (4/5)
-		'1234' pairsDistanceFrom: '5678' ==> 0
+		'1234' pairsSimilarityWith: '2234' ==> (2/3)
+		'1234' pairsSimilarityWith: '123' ==>  (4/5)
+		'1234' pairsSimilarityWith: '5678' ==> 0
 	"
 	| set1 set2 |
 	set1 := Set new.
