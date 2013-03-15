@@ -114,34 +114,6 @@ Collection >> flatten [
 ]
 
 { #category : #'*CollectionExtensions' }
-Collection >> groupedBy: aBlock [
-	"Return a dictionary whose keys are the result of evaluating aBlock for all elements in
-	 the collection, and the value for each key is the collection of elements that evaluated
-	 to that key. e.g.
-	     #(1 2 3 4 5) groupedBy: [:each | each odd]
-	   a Dictionary  
-	     true ---> #( 1 3 5)
-	     false --> #(2 4)
-	originally developed by a. kuhn and released under MIT."
-
-	| result |
-	result := Dictionary new.
-	self do:
-		[:each | | key collection |
-		key := aBlock value: each.
-		collection := result at: key ifAbsentPut: [OrderedCollection new].
-		collection add: each].
-	self species ~~ OrderedCollection ifTrue:
-		["Convert the result collections to be the right type.
-		  Note that it should be safe to modify the dictionary
-		  while iterating because we only replace values for existing keys"
-		result keysAndValuesDo:
-			[:key :value | result at: key put: (self species withAll: value)]].
-
-	^result
-]
-
-{ #category : #'*CollectionExtensions' }
 Collection >> groupedBy: aBlock affect: anotherBlock [
 	"First, evaluate aBlock for each of the receiver's elements and group the
 	elements by the resulting values, and second, evaluate anotherBlock for
@@ -151,19 +123,6 @@ Collection >> groupedBy: aBlock affect: anotherBlock [
 	"This is a shorthand for [ (self groupedBy: aBlock) collect: anotherBlock ]."
 
 	^(self groupedBy: aBlock) associationsDo: [ :each | each value: (anotherBlock value: each value) ]
-]
-
-{ #category : #'*CollectionExtensions' }
-Collection >> includesAll: aCollection [ 
-	"Answer true if the receiver includes all elements of aCollection with at
-	least as many occurrences as in aCollection. For a less strict comparison
-	please refer to supersetOf: and its inverse subsetOf:."
-
-
-	^(aCollection isCollection) and: [
-		aCollection size <= self size and: [
-			aCollection allSatisfy: [ :each | 
-				(aCollection occurrencesOf: each) <= (self occurrencesOf: each) ]]]
 ]
 
 { #category : #'*CollectionExtensions' }
@@ -204,12 +163,4 @@ Collection >> shuffle: times [
 	times timesRepeat: [ 
 		self swap: (random next * size) floor + 1 with: (random next * size) floor + 1 
 	].
-]
-
-{ #category : #'*CollectionExtensions' }
-Collection >> sum: aSymbolOrBlock [ 
-	 
-	^self 
-		inject: 0 
-		into: [:sum :each | sum + (aSymbolOrBlock value: each)]
 ]
