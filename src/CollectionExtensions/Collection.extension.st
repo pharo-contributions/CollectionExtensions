@@ -69,7 +69,7 @@ Collection >> flatCollect: aBlock [
 	
 	| stream |
 	self isEmpty ifTrue: [ ^ self copy ].
-	stream := (self species new: 0) nsWriteStream.
+	stream := (self species new: 0) writeStream.
 	self do: [ :each | stream nextPutAll: (aBlock value: each) ].
 	^ stream contents
 ]
