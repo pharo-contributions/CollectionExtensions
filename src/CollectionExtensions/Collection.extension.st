@@ -1,6 +1,11 @@
 Extension { #name : #Collection }
 
 { #category : #'*CollectionExtensions' }
+Collection >> asCollection [
+	^ self
+]
+
+{ #category : #'*CollectionExtensions' }
 Collection >> collectAsSet: aBlock [
 	"Evaluates aBlock for each element of the receiver and collects
 	the resulting values into a Set."
