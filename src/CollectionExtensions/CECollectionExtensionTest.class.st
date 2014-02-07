@@ -4,6 +4,17 @@ Class {
 	#category : #CollectionExtensions
 }
 
+{ #category : #conversion }
+CECollectionExtensionTest >> testAsCollection [
+
+	| collection |
+	self assert: (Object new asCollection isKindOf: OrderedCollection).
+	
+	collection := Set new.
+	self assert: collection asCollection equals: collection.
+	self assert: (collection asCollection isKindOf: Set)
+]
+
 { #category : #'collect as set' }
 CECollectionExtensionTest >> testCollectAsSet [
 	"self debug: #testCollectAsSet"
@@ -66,20 +77,20 @@ CECollectionExtensionTest >> testDeepFlattenOnString [
 		equals: #(('foo' ('bar')) 'zorg') deepFlatten
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #detect }
 CECollectionExtensionTest >> testDetectIfOne [
 	| element result |
 	result := #(1 2 3) detect: [:each | each = 2] ifOne: [:theOne | element := theOne ].
 	self assert: element = 2.
 	self assert: result = 2.
 
-	element := nil.
+	element := 42.
 	result := #(1 2 3) detect: [:each | each = 4] ifOne: [:theOne | element := theOne ].
-	self assert: element isNil.
+	self assert: element equals: 42.
 	self assert: result isNil.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #detect }
 CECollectionExtensionTest >> testDetectIfOneIfNone [
 	| element |
 	#(1 2 3) detect: [:each | each = 2] ifOne: [:theOne | element := theOne ] ifNone: [element := nil].
