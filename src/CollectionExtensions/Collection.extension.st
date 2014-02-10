@@ -125,3 +125,11 @@ Collection >> shuffle: times [
 		self swap: (random next * size) floor + 1 with: (random next * size) floor + 1 
 	].
 ]
+
+{ #category : #'*CollectionExtensions' }
+Collection class >> with: anObject withAll: aCollection [
+	^ (self new: (aCollection size + 1))
+		add: anObject;
+		addAll: aCollection;
+		yourself
+]
