@@ -127,6 +127,18 @@ Collection >> shuffle: times [
 ]
 
 { #category : #'*CollectionExtensions' }
+Collection >> sortAscending: aBlockWithOneArgument [
+	^ self sorted: [ :x :y |
+		(aBlockWithOneArgument value: x) < (aBlockWithOneArgument value: y) ]
+]
+
+{ #category : #'*CollectionExtensions' }
+Collection >> sortDescending: aBlockWithOneArgument [
+	^ self sorted: [ :x :y |
+		(aBlockWithOneArgument value: x) > (aBlockWithOneArgument value: y) ]
+]
+
+{ #category : #'*CollectionExtensions' }
 Collection class >> with: anObject withAll: aCollection [
 	^ (self new: (aCollection size + 1))
 		add: anObject;
