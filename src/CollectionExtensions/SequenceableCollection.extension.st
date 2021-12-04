@@ -27,6 +27,21 @@ SequenceableCollection >> pairsSimilarityWith: aSequenceableCollection [
 ]
 
 { #category : #'*CollectionExtensions' }
+SequenceableCollection >> partitionBy: count [ 
+	"Partition every count elements into an array. Answers with a collection (of the same type) of partitions.
+	#(1 2 3 4) partitionBy: 2 >>> #(#(1 2) #(3 4))"			
+	| i len |
+	i := 1.
+	len := self size.
+	^ self class streamContents: [ :out |
+		[ i + count <= (len + 1) ] whileTrue: [ 
+			out nextPut: (self copyFrom: i to: (i + count - 1)).
+			i := i + count.
+		]
+	]
+]
+
+{ #category : #'*CollectionExtensions' }
 SequenceableCollection >> piecesCutWhere: testBlock do: enumerationBlock [ 
 	"Evaluate testBlock for successive pairs of the receiver elements,
 	breaking the receiver into pieces between elements where
