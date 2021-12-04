@@ -28,7 +28,7 @@ SequenceableCollection >> pairsSimilarityWith: aSequenceableCollection [
 
 { #category : #'*CollectionExtensions' }
 SequenceableCollection >> partitionBy: count [ 
-	"Partition every count elements into an array. Answers with a collection (of the same type) of partitions.
+	"Partition every count elements into a sequence. Answers with a collection (of the same type) of partitions.
 	#(1 2 3 4) partitionBy: 2 >>> #(#(1 2) #(3 4))"			
 	| i len |
 	i := 1.
