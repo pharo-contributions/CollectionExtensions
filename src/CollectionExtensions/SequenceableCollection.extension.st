@@ -1,6 +1,24 @@
 Extension { #name : #SequenceableCollection }
 
 { #category : #'*CollectionExtensions' }
+SequenceableCollection >> groupsOf: n step: step [ 
+	"Return groups of n elements, advancing starting position by step for each successive group.
+	 Answers with an ordered collection of groups.
+	#(1 2 3 4) groupsOf: 2 step: 1 >>> #(#(1 2) #(2 3) #(3 4))"			
+	| len i |
+	i := 1.
+	len := self size.
+	^ OrderedCollection streamContents: [ :out |
+		[ i+n-1 < len ] whileTrue: [
+ 			out nextPut: (self copyFrom: i to: i + n - 1).
+			i := i + step.
+		].
+		"include any left over elements in the last group"
+		i <= len ifTrue: [ out nextPut: (self copyFrom: i to: len) ]
+	]
+]
+
+{ #category : #'*CollectionExtensions' }
 SequenceableCollection >> pairsDistanceFrom: aSequenceableCollection [
 	
 	self deprecated: 'Please use pairsSimilarityWith:'.
@@ -24,21 +42,6 @@ SequenceableCollection >> pairsSimilarityWith: aSequenceableCollection [
 	aSequenceableCollection overlappingPairsDo: [:a :b | 
 		set2 add: a -> b].
 	^ 2 * (set1 intersection: set2) size / (set1 size + set2 size)
-]
-
-{ #category : #'*CollectionExtensions' }
-SequenceableCollection >> partitionBy: count [ 
-	"Partition every count elements into a sequence. Answers with a collection (of the same type) of partitions.
-	#(1 2 3 4) partitionBy: 2 >>> #(#(1 2) #(3 4))"			
-	| i len |
-	i := 1.
-	len := self size.
-	^ self class streamContents: [ :out |
-		[ i + count <= (len + 1) ] whileTrue: [ 
-			out nextPut: (self copyFrom: i to: (i + count - 1)).
-			i := i + count.
-		]
-	]
 ]
 
 { #category : #'*CollectionExtensions' }
