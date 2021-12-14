@@ -1,6 +1,24 @@
 Extension { #name : #SequenceableCollection }
 
 { #category : #'*CollectionExtensions' }
+SequenceableCollection >> groupsOf: n step: step [ 
+	"Return groups of n elements, advancing starting position by step for each successive group.
+	 Answers with an ordered collection of groups.
+	#(1 2 3 4) groupsOf: 2 step: 1 >>> #(#(1 2) #(2 3) #(3 4))"			
+	| len i |
+	i := 1.
+	len := self size.
+	^ OrderedCollection streamContents: [ :out |
+		[ i+n-1 < len ] whileTrue: [
+ 			out nextPut: (self copyFrom: i to: i + n - 1).
+			i := i + step.
+		].
+		"include any left over elements in the last group"
+		i <= len ifTrue: [ out nextPut: (self copyFrom: i to: len) ]
+	]
+]
+
+{ #category : #'*CollectionExtensions' }
 SequenceableCollection >> pairsDistanceFrom: aSequenceableCollection [
 	
 	self deprecated: 'Please use pairsSimilarityWith:'.
